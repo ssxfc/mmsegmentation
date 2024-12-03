@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'EBHIDataset'
-data_root = r'D:\datasets\final_ebhi'
+data_root = r'/home/dcd/zww/data/final_ebhi'
 crop_size = (224, 224)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -40,7 +40,7 @@ tta_pipeline = [
         ])
 ]
 train_dataloader = dict(
-    batch_size=2,
+    batch_size=8,
     num_workers=1,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -49,10 +49,10 @@ train_dataloader = dict(
         data_root=data_root,
         data_prefix=dict(
             img_path='img_dir', seg_map_path='ann_dir'),
-        ann_file=r'partition\train.txt',
+        ann_file=r'partition/train.txt',
         pipeline=train_pipeline))
 val_dataloader = dict(
-    batch_size=2,
+    batch_size=8,
     num_workers=1,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -61,9 +61,21 @@ val_dataloader = dict(
         data_root=data_root,
         data_prefix=dict(
             img_path='img_dir', seg_map_path='ann_dir'),
-        ann_file=r'partition\val.txt',
+        ann_file=r'partition/val.txt',
         pipeline=test_pipeline))
-test_dataloader = val_dataloader
+
+test_dataloader = dict(
+    batch_size=8,
+    num_workers=1,
+    persistent_workers=True,
+    sampler=dict(type='DefaultSampler', shuffle=True),
+    dataset=dict(
+        type=dataset_type,
+        data_root=data_root,
+        data_prefix=dict(
+            img_path='img_dir', seg_map_path='ann_dir'),
+        ann_file=r'partition/test.txt',
+        pipeline=test_pipeline))
 
 # 验证Evaluator
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mDice', 'mFscore'])
