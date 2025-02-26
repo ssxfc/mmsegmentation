@@ -10,10 +10,11 @@ from mmengine.runner import Runner
 
 from mmseg.registry import RUNNERS
 
-
+# pathx = r'configs/unet/my_unet_ebhi-224x224.py'
+pathx = r"/home/dcd/zww/repos/mmsegmentation/mine/config.py"
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a segmentor')
-    parser.add_argument('config', help='train config file path')
+    parser.add_argument('--config', default=pathx, help='train config file path')
     parser.add_argument('--work-dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume',
